@@ -42,7 +42,7 @@ repository if it's an initial commit), and run `git bump <version>`, where
 `<version>` is the version you want to release (try `1.0.0`).  You'll be
 greeted with a familiar sight:
 
-    spine-reticulator 1.0.0
+    spline-reticulator 1.0.0
 
     # Please enter the commit message for your changes. Lines starting
     # with '#' will be ignored, and an empty message aborts the commit.
