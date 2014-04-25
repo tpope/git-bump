@@ -3,7 +3,7 @@
 Here's a popular set of best practices for doing releases for code bases
 stored in Git:
 
-* Bump version numbers related minutiae in the code base.
+* Update version-related minutiae in the code base.
 * Commit with a message like `projectname 1.2.3`.
 * Create a signed, annotated tag with the same message with a name like
   `v1.2.3`.
