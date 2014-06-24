@@ -40,6 +40,10 @@ git bump can find it:
       tag_message.to_s.include?("\n-----BEGIN PGP")
     end
 
+    def tag_body?
+      tag_message.to_s.sub(/\n-----BEGIN PGP.*/m, '').include?("\n\n")
+    end
+
     def body
       @body ||= %x{git log -1 --pretty=format:%b #{sha1}}
     end
@@ -155,7 +159,8 @@ git bump can find it:
 
     def tag!(name)
       annote = if latest && !latest.tag_signed? then '-a' else '-s' end
-      body = %x{git log -1 --pretty=format:%B}
+      format = if releases.size < 2 || latest.tag_body? then '%B' else '%s' end
+      body = %x{git log -1 --pretty=format:#{format}}
       system!('git', 'tag', '-f', annote, name, '-m', body)
       puts <<-EOS
 Successfully created #{name}.  If you made a mistake, use `git bump redo` to
