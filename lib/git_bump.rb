@@ -26,6 +26,20 @@ git bump can find it:
       @tag, @sha1, @name, @version = tag, sha1, name, Version.new(version)
     end
 
+    def tag_type
+      @tag_type ||= %x{git cat-file -t #{tag}}.chomp
+    end
+
+    def tag_message
+      if tag_type == 'tag'
+        @tag_message ||= %x{git cat-file tag #{tag}}.split("\n\n", 2).last
+      end
+    end
+
+    def tag_signed?
+      tag_message.to_s.include?("\n-----BEGIN PGP")
+    end
+
     def body
       @body ||= %x{git log -1 --pretty=format:%b #{sha1}}
     end
@@ -140,8 +154,9 @@ git bump can find it:
     end
 
     def tag!(name)
-      subject = %x{git log -1 --pretty=format:%s}.chomp
-      system!('git', 'tag', '-f', '-s', name, '-m', subject)
+      annote = if latest && !latest.tag_signed? then '-a' else '-s' end
+      body = %x{git log -1 --pretty=format:%B}
+      system!('git', 'tag', '-f', annote, name, '-m', body)
       puts <<-EOS
 Successfully created #{name}.  If you made a mistake, use `git bump redo` to
 try again.  Once you are satisfied with the result, run
