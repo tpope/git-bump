@@ -171,7 +171,7 @@ try again.  Once you are satisfied with the result, run
       elsif %x{git rev-parse --verify -q HEAD^}.empty?
         system!('git', 'update-ref', '-d', %x{git symbolic-ref HEAD}.chomp)
       else
-        system!('git', 'reset', '--soft', 'HEAD^')
+        system!('git', 'update-ref', %x{git symbolic-ref HEAD}.chomp, 'HEAD^')
       end
     end
 
