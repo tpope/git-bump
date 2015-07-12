@@ -223,7 +223,7 @@ try again.  Once you are satisfied with the result, run
     unless %x{git diff}.empty?
       abort "Discard or stage your changes."
     end
-    unless latest.sha1 == %x{git rev-parse HEAD}.chomp
+    unless latest && latest.sha1 == %x{git rev-parse HEAD}.chomp
       abort "Can only amend the top-most commit."
     end
     system!('git', 'commit', '--amend', '--verbose', '--reset-author')
