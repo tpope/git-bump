@@ -161,13 +161,18 @@ git bump can find it:
       annote = if latest && !latest.tag_signed? then '-a' else '-s' end
       format = if releases.size < 2 || latest.tag_body? then '%B' else '%s' end
       body = %x{git log -1 --pretty=format:#{format}}
-      system!('git', 'tag', '-f', annote, name, '-m', body)
-      puts <<-EOS
+      if system('git', 'tag', '-f', annote, name, '-m', body)
+        puts <<-EOS
 Successfully created #{name}.  If you made a mistake, use `git bump redo` to
 try again.  Once you are satisfied with the result, run
 
         git push origin master #{name}
-      EOS
+        EOS
+      elsif %x{git rev-parse --verify -q HEAD^}.empty?
+        system!('git', 'update-ref', '-d', %x{git symbolic-ref HEAD}.chomp)
+      else
+        system!('git', 'reset', '--soft', 'HEAD^')
+      end
     end
 
     def system!(*args)
