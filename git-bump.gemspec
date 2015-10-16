@@ -1,7 +1,7 @@
 # coding: utf-8
 Gem::Specification.new do |spec|
   spec.name          = 'git-bump'
-  spec.version       = '1.0.0'
+  spec.version       = '1.1.0'
   spec.authors       = ['Tim Pope']
   spec.email         = ["code\100tpope.net"]
   spec.description   = 'Git based release management'
