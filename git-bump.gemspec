@@ -9,7 +9,8 @@ Gem::Specification.new do |spec|
   spec.homepage      = 'https://tpo.pe/git-bump'
   spec.license       = 'MIT'
 
-  spec.files         = ['bin/git-bump', 'lib/git_bump.rb']
+  spec.bindir        = 'exe'
+  spec.files         = ['exe/git-bump', 'lib/git_bump.rb']
   spec.executables   = ['git-bump']
   spec.require_paths = ['lib']
 
