@@ -162,11 +162,12 @@ git bump can find it:
       format = if releases.size < 2 || latest.tag_body? then '%B' else '%s' end
       body = %x{git log -1 --pretty=format:#{format}}
       if system('git', 'tag', '-f', annote, name, '-m', body)
+        branch = %x{git symbolic-ref --short HEAD}.chomp
         puts <<-EOS
 Successfully created #{name}.  If you made a mistake, use `git bump redo` to
 try again.  Once you are satisfied with the result, run
 
-        git push origin master #{name}
+        git push origin #{branch} #{name}
         EOS
       else
         abort "Tag failed.  Create it by hand or use git reset --soft HEAD^ to try again."
